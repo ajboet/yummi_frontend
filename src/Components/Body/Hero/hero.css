@@ -1,0 +1,85 @@
+.hero-image{
+  --text-color-h1: white;
+  --text-color-h2: #FF4700;
+
+  height: 75vh;
+  background: url('../../../assets/images/hero-image.jpg'), grey;
+  background-repeat-x: no-repeat;
+  background-position: left center;
+  background-size: 150vw;
+  transition: 3s background-position;
+  font-family: 'Cabin Sketch', cursive;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-image:hover{
+  background-position-x: -10vw;
+  transition: 3s background-position ease-out
+}
+.hero-image
+  .text-content {
+    text-shadow: 2px 1px 1px var(--text-color-h1);
+    transition: 2s transform
+  }
+.hero-image
+  .text-content
+    h1{
+      font-size: 10vh;
+      text-transform: uppercase;
+      color: var(--text-color-h1);
+    }
+.hero-image
+  .text-content
+    h1 
+      strong {
+        color: var(--text-color-h2);
+        display: block;
+        font-size: calc( 100% + 2rem )
+      }
+.hero-image:hover
+  .text-content {
+    transition: 2s transform;
+    transform: scale(1.2);
+    animation: shadow 1s infinite alternate;
+  }
+@keyframes shadow {
+  to {
+    text-shadow: 1px 1px 1px var(--text-color-h2);
+  }
+}
+
+.hero-image
+  .motto{
+    /*font-family: 'Amatic SC', cursive;*/
+    background-color: #005700;
+    position: absolute;
+    transform: rotate(-45deg) translate(-10rem, -20rem) scale(1.4);
+    transform-origin: top center;
+    animation: motto 1s ease-out forwards;
+    top: 0rem;
+    left: 0rem;
+    padding: 0 6rem 10px;
+    width: 20rem;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 2.8rem;
+    font-weight: bold;
+    line-height: 2.8rem;
+    color: var(--text-color-h2);
+    color: white;
+    text-shadow: 0 0 1px black;
+    box-shadow: 0px 4px 1px red,
+                0px 6px 2px white,
+                inset 0px -4px 8px rgba(255, 255, 255, 0.3);
+  }
+
+@keyframes motto {
+  to {
+    transform: rotate(-45deg) translate(-7rem, -7rem) scale(1);
+  }
+}
