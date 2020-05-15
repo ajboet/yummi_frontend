@@ -1,9 +1,13 @@
 import React from 'react';
 import Hero from './Hero/Hero'
+import Menu from './Menu/Menu'
 
 const Body = (props) => {
   return (
-    <Hero />
+    <div>
+      <Hero />
+      <Menu />
+    </div>
   )
 }
 
