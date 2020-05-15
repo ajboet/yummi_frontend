@@ -1,0 +1,13 @@
+.menu {
+  border: 1px solid red;
+  width: 100% !important;
+  /* display: flex; */
+}
+
+.menu .setUp {
+  border: 1px solid blue;
+}
+
+.menu .cart {
+  border: 1px solid green
+}
