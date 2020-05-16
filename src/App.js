@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./Components/NavBar/Navbar.js"
@@ -7,24 +6,18 @@ import Navbar from "./Components/NavBar/Navbar.js"
 import Body from './Components/Body/Body'
 
 function App() {
+
+  const logged = localStorage.getItem('token')
+  const [token, setToken] = React.useState(logged !== null ? true : false);
+
+  const changeToken = (value) => {
+    setToken(value)
+  }
+
   return (
     <div className="App">
-      <Navbar></Navbar>
+      <Navbar token={token} changeToken={changeToken}></Navbar>
       <Body />
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
     </div>
   );
 }
