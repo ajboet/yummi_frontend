@@ -1,0 +1,29 @@
+.menu {
+  border: 1px solid red;
+  width: 100% !important;
+  /* display: flex; */
+}
+
+.menu .setUp {
+  border: 1px solid blue;
+}
+
+.menu .cart {
+  border: 1px solid green
+}
+
+.bred {
+  border: 1px solid red;
+}
+
+.bblue {
+  border: 1px solid blue;
+}
+
+.bgreen {
+  border: 1px solid green;
+}
+
+.borange {
+  border: 1px solid orange;
+}
