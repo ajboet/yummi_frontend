@@ -9,6 +9,12 @@ const NavBase = (props) => {
 
   const logout = () => {
     axiosInstance.get('logout')
+    .then(response => {
+      props.showMessage({
+        mode:'success',
+        text:response.data.message
+      })
+    })
     localStorage.removeItem('token')
     localStorage.removeItem('me')
     delete axiosInstance.defaults.headers['Authorization']
@@ -21,12 +27,12 @@ const NavBase = (props) => {
       <NavDropdown title="Menu" id="nav-dropdown">
         {
           !props.token ? [
-            <Login key="login" done={() => props.changeToken(true)}></Login>,
-            <User key="register" mode="Register"></User>
+            <Login {...props} key="login"></Login>,
+            <User {...props} key="register" mode="Register"></User>
           ]:
           [
-            <User key="profile" mode="My profile"></User>,
-            <NavDropdown.Item key="history" eventKey="history">History</NavDropdown.Item>,
+            <User {...props} key="profile" mode="My profile"></User>,
+            <NavDropdown.Item  key="history" eventKey="history">History</NavDropdown.Item>,
             <NavDropdown.Item 
               onClick={logout}
               key="logout" eventKey="logout">

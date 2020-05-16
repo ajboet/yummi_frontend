@@ -19,7 +19,18 @@ const Login = (props) => {
       setShow(false)
       localStorage.setItem('token',response.data.token)
       axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
-      props.done()
+      props.changeToken(true)
+      props.showMessage({
+        mode:'success',
+        text:response.data.message
+      })
+    })
+    .catch(err => {
+      props.showMessage({
+        mode:'danger',
+        title:err.response.data.message,
+        text:err.response.data.errors
+      })
     })
   } 
 
