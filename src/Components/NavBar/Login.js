@@ -16,9 +16,10 @@ const Login = (props) => {
   const login = () => {
     axiosInstance.post('login',user)
     .then((response) => {
-      props.donelog()
       setShow(false)
       localStorage.setItem('token',response.data.token)
+      axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
+      props.done()
     })
   } 
 
@@ -86,7 +87,7 @@ const Login = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant='outline-danger' onClick={() => setShow(false) }>Close</Button>
-          <Button onClick={() => login() }>Submit</Button>
+          <Button onClick={() => login() }>Sign in</Button>
         </Modal.Footer>
       </Modal>
     </>
