@@ -10,10 +10,13 @@ import CardColumns from 'react-bootstrap/CardColumns'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
+import Form from 'react-bootstrap/Form'
+
 const Menu = (props) => {
 
   const [products, setProducts] = useState([])
   const [order, setOrder] = useState([])
+  const [cartArea, setShow] = useState(false)
 
   useEffect(() => {
     axiosInstance.get('product')
@@ -23,14 +26,44 @@ const Menu = (props) => {
       })
   }, [])
 
+  useEffect(() => {
+    axiosInstance.get('order')
+      .then(response => {
+        setOrder(response.data)
+        console.log('The order ->', response);
+      })
+  }, [])
+
   const addToOrder = (id) => {
     console.log('Lo que llega para mandar al carro ', id);
     axiosInstance.post('order/add/' + id + '/')
       .then((response) => {
-        console.log('Respuesta de addToOrder ->', response);
-        // props.donelog()
-        // setShow(false)
-        // localStorage.setItem('token',response.data.token)
+        console.log('response addToOrder ->', response);
+        setOrder(response.data)
+      })
+  }
+
+  const cancelOrder = () => {
+    axiosInstance.delete('order/delete/')
+      .then((response) => {
+        console.log('Delete ->', response);
+        setOrder([])
+      })
+  }
+
+  const addItem = (id) => {
+    axiosInstance.post('order/item/increment/', { cartItemIndex: id })
+      .then((response) => {
+        console.log('addItem ->', response);
+        setOrder(response.data)
+      })
+  }
+
+  const subtractItem = (id) => {
+    axiosInstance.post('order/item/decrement/', { cartItemIndex: id })
+      .then((response) => {
+        console.log('subtractItem ->', response);
+        setOrder(response.data)
       })
   }
 
@@ -62,84 +95,125 @@ const Menu = (props) => {
 
   const cart = <Card style={{ width: '100%' }}>
     <Card.Body>
-      <Card.Title>Order</Card.Title>
+      <Card.Title>
+        Order
+        <Button
+          variant="primary"
+          size={'sm'}
+          style={{ 'width': 25, }}
+          onClick={() => { setShow(false) }}
+        >
+          -
+        </Button>
+      </Card.Title>
       <Card.Text>
       </Card.Text>
-      <Row className="borange">
-        <Col className="bred" xs={5}>
+      <Row className="headCart">
+        <Col className="" xs={4}>
           Product
           </Col>
-        <Col className="bblue" xs={4}>
+        <Col className="" xs={5}>
           Quantity
           </Col>
-        <Col className="bgreen" xs={3}>
+        <Col className="" xs={3}>
           Price
           </Col>
       </Row>
-      <Row className="borange">
-        <Col className="bred" xs={5}>
-          Pizza X's
-          </Col>
-        <Col className="bblue" xs={4}>
-          <Row className="borange">
-            <Col className="bred" xs={3}>
-              <Button
-                variant="primary"
-                size={'sm'}
-              >
-                -
-                </Button>
-            </Col>
-            <Col className="bblue" xs={6}>
+      {
+        order.items === undefined || order.items.length === 0 ? '' :
+          order.items.map((item, key) => {
+            return <Row key={key} className="bodyCart">
+              <Col className="cartInfo" xs={4}>
+                <span>
+                  {item.name}
+                </span>
+              </Col>
+              <Col className="" xs={5}>
+                <Row className="">
+                  <Col className="options" xs={4}>
+                    <Button
+                      variant="primary"
+                      size={'sm'}
+                      style={{ 'width': 25, }}
+                      onClick={() => {
+                        subtractItem(key)
+                      }}
+                    >
+                      -
+                      </Button>
+                  </Col>
+                  <Col className="options" xs={4}>
+                    <Form.Control
+                      size="sm"
+                      type="text"
+                      value={item.quantity}
+                      disabled
+                    />
+                  </Col>
+                  <Col className="options" xs={4}>
+                    <Button
+                      variant="primary"
+                      size={'sm'}
+                      style={{ 'width': 25, }}
+                      onClick={() => {
+                        addItem(key)
+                      }}
+                    >
+                      +
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+              <Col className="cartInfo" xs={3}>
+                <span>
+                  {item.price}
+                </span>
+              </Col>
+            </Row>
+          }
+          )}
+      <Row className="bodyCart">
+        <Col className="" xs={4}>
 
-            </Col>
-            <Col className="bgreen" xs={3}>
-              <Button
-                variant="primary"
-                size={'sm'}
-              >
-                +
-                </Button>
-            </Col>
-          </Row>
         </Col>
-        <Col className="bgreen" xs={3}>
-          22$
-          </Col>
-      </Row>
-      <Row className="borange">
-        <Col className="bred" xs={5}>
-
-        </Col>
-        <Col className="bblue" xs={4}>
+        <Col className="" xs={5}>
           Sub Total
           </Col>
-        <Col className="bgreen" xs={3}>
-          22S
-          </Col>
+        <Col className="" xs={3}>
+          {order.subtotal}
+        </Col>
       </Row>
-      <Row className="borange">
-        <Col className="bred" xs={5}>
+      <Row className="bodyCart">
+        <Col className="" xs={4}>
 
         </Col>
-        <Col className="bblue" xs={4}>
+        <Col className="" xs={5}>
           Tax
           </Col>
-        <Col className="bgreen" xs={3}>
-          2$
-          </Col>
+        <Col className="" xs={3}>
+          {order.tax}
+        </Col>
       </Row>
-      <Row className="borange">
-        <Col className="bred" xs={5}>
+      <Row className="bodyCart">
+        <Col className="" xs={4}>
 
         </Col>
-        <Col className="bblue" xs={4}>
+        <Col className="" xs={5}>
           Total
-          </Col>
-        <Col className="bgreen" xs={3}>
-          24$
-          </Col>
+        </Col>
+        <Col className="" xs={3}>
+          {order.total}
+        </Col>
       </Row>
+      <Button
+        variant="primary"
+        className="m-2"
+        onClick={() => {
+          cancelOrder()
+        }}
+      >
+        Cancel Order
+      </Button>
       <Button
         variant="primary"
         className="m-2"
@@ -151,11 +225,21 @@ const Menu = (props) => {
 
   return (
     <Row className="menu">
-      <Col xs="12"><span>Menu</span></Col>
-      <Col className="setUp" xs={8}>
+      <Col xs="12">
+        <span>Menu</span>
+        <Button
+          variant="primary"
+          size={'sm'}
+          style={{ 'width': 25, }}
+          onClick={() => { setShow(true) }}
+        >
+          +
+        </Button>
+      </Col>
+      <Col className="setUp" xs={cartArea === true ? 8 : 12}>
         {cards}
       </Col>
-      <Col className="cart" xs={4}>
+      <Col className="cart" xs={cartArea === true ? 4 : 0}>
         {cart}
       </Col>
     </Row>
