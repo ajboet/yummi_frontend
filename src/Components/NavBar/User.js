@@ -35,6 +35,19 @@ const User = (props) => {
       if(props.mode === "My profile"){
         localStorage.setItem('me',JSON.stringify(user))
       }
+      if(response.data.message !== undefined){
+        props.showMessage({
+          mode:'success',
+          text:response.data.message
+        })  
+      }
+    })
+    .catch(err => {
+      props.showMessage({
+        mode:'danger',
+        title:err.response.data.message,
+        text:err.response.data.errors
+      })
     })
   }
 
@@ -49,6 +62,13 @@ const User = (props) => {
         .then(response =>{
           localStorage.setItem('me',JSON.stringify(response.data))
           setUser({...user, ...response.data})
+        })
+        .catch(err => {
+          props.showMessage({
+            mode:'danger',
+            title:err.response.data.message,
+            text:err.response.data.errors
+          })
         })
       }
       else {
