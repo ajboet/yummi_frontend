@@ -235,8 +235,10 @@ const User = (props) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='outline-danger' onClick={() => setShow(false) }>Close</Button>
-          <Button onClick={() => submit() }>Submit</Button>
+          <Button variant='outline-danger' style={{ fontWeight:800 }} onClick={() => setShow(false) }>
+            Close
+          </Button>
+          <Button variant='outline-primary' onClick={() => submit() }>Submit</Button>
         </Modal.Footer>
       </Modal>
     </>
