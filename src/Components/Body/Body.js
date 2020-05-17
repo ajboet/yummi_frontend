@@ -2,6 +2,7 @@ import React from 'react';
 import Hero from './Hero/Hero'
 import Menu from './Menu/Menu'
 import Delivery from './Delivery/Delivery'
+import Footer from './Footer/Footer'
 
 const Body = (props) => {
   return (
@@ -9,6 +10,7 @@ const Body = (props) => {
       <Hero />
       <Menu {...props} />
       <Delivery />
+      <Footer />
     </div>
   )
 }

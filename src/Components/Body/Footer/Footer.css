@@ -1,0 +1,17 @@
+.homeFooter {
+    /* height: 30vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 29vh;
+    background-color: #190F0E;
+    background-image: url('../../../assets/images/FondoYummiPizza.svg');
+    background-repeat-x: no-repeat;
+    background-size: 100vw;
+}
+
+.homeFooter .inFooter {
+    /* border: 1px solid red; */
+    color: white;
+
+}
