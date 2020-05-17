@@ -16,10 +16,14 @@ const NavBase = (props) => {
         text:response.data.message
       })
     })
-    localStorage.removeItem('token')
+    if (localStorage.getItem('guest_token')) {
+      localStorage.setItem('token', localStorage.getItem('guest_token'))
+      localStorage.setItem('is_guest', true)
+      props.changeGuest(true)
+    }
+    localStorage.removeItem('guest_token')
     localStorage.removeItem('me')
-    delete axiosInstance.defaults.headers['Authorization']
-    props.changeToken(false)
+    axiosInstance.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`
   }
 
   return (
@@ -40,7 +44,7 @@ const NavBase = (props) => {
         </Nav>
         <NavDropdown title="Menu" id="nav-dropdown" style={{display:'inline-block'}}>
           {
-            !props.token ? [
+            props.guest ? [
               <Login {...props} key="login"></Login>,
               <User {...props} key="register" mode="Register"></User>
             ]:

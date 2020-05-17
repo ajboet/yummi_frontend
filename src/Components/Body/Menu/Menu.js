@@ -24,6 +24,8 @@ const Menu = (props) => {
         setProducts(response.data.products)
         if (response.data.token) {
           localStorage.setItem('token',response.data.token)
+          localStorage.setItem('is_guest', true)
+          props.changeGuest(true)
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
         }
       })

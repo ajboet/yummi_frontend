@@ -10,6 +10,8 @@ function App() {
   const [show,setShow] = React.useState(false)
   const logged = localStorage.getItem('token')
   const [token, setToken] = React.useState(logged !== null ? true : false);
+  const is_guest = localStorage.getItem('is_guest')
+  const [guest, setGuest] = React.useState(is_guest !== null ? true : false);
   const [alertVar, setAlert] = React.useState({
     'mode':'info',
     'text':'',
@@ -24,6 +26,10 @@ function App() {
 
   const changeToken = (value) => {
     setToken(value)
+  }
+
+  const changeGuest = (value) => {
+    setGuest(value)
   }
 
   const changeCurrency = (cash) => {
@@ -79,7 +85,7 @@ function App() {
           alertVar.text.split('\n').map((item,i) => <p style={{ fontSize:14, paddingTop:0,paddingBottom:0 }} key={i}>{item}</p>)
         }
       </Alert>
-      <Navbar currency={currency} setCurrency={changeCurrency} token={token} changeToken={changeToken} showMessage={showMessage}></Navbar>
+      <Navbar currency={currency} setCurrency={changeCurrency} token={token} changeToken={changeToken} showMessage={showMessage} guest={guest} changeGuest={changeGuest}></Navbar>
       <Body currency={currency} rateUSD={rateUSD} token={token} showMessage={showMessage}/>
     </div>
   );
