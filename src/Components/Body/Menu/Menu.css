@@ -1,25 +1,83 @@
 .menu {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   width: 100% !important;
+  background-color: #090100;
   /* display: flex; */
 }
 
+.menu .menuRow {
+  margin: 0px;
+}
+
+.menu .menuRow .menuTitle {
+  margin: 30px 0px;
+  /* --text-color-h1: #005700; */
+  --text-color-h1: white;
+  /* --text-color-h1: #FF4700; */
+  font-family: 'Cabin Sketch', cursive;
+}
+
+.menu .menuRow .text-content h1 {
+  font-size: 10vh;
+  text-transform: uppercase;
+  color: var(--text-color-h1);
+}
+
 .menu .setUp {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.fixedItem {
+  /* position: fixed !important; */
+  /* left: 50%;transform: translate(-50%, 0); */
+}
+
+.card-product {
+  border: 0px;
 }
 
 .menu .cart {
-  border: 1px solid green
+  /* border: 1px solid green; */
+  padding: 0rem 1rem;
+  /* position: fixed !important */
+}
+
+.menu .cart .cartBody {
+  border: 10px solid #4f2402;
+  background-color: #005700;
+  padding: 0px 15px;
+  min-height: 90vh;
+}
+
+.menu .cart .cartBody .title {
+  --text-color-h1: white;
+  font-size: 10vh;
+  text-transform: uppercase;
+  color: var(--text-color-h1);
+  font-family: 'Cabin Sketch', cursive;
+  /* display: flex; */
+}
+
+.menu .cart .cartBody .title .btnMinimize {
+  padding-bottom: 0px;
+  margin-top: -3rem;
+  float: right;
 }
 
 .menu .cart .headCart {
-  /* border: 1px solid gray;
-  margin-bottom: 4px; */
   border-bottom: 1px solid gray;
   margin-bottom: 4px;
   margin-right: -15px;
   margin-left: -15px;
   padding-bottom: 4px;
+
+  --text-color-h1: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--text-color-h1);
+  font-family: 'Cabin Sketch', cursive;
 }
 
 .menu .cart .bodyCart {

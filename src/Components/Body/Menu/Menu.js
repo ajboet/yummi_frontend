@@ -79,7 +79,7 @@ const Menu = (props) => {
     {products === undefined ? "" : products.map((product, key) => (
       <Card
         key={key}
-        className="m-2"
+        className="m-2 card-product"
       >
         <Card.Img variant="top" src={product.image} />
         <Card.Body>
@@ -101,20 +101,23 @@ const Menu = (props) => {
     ))}
   </CardColumns>
 
-  const cart = <Card style={{ width: '100%' }}>
+  const cart = <Card className='cartBody'>
     <Card.Body>
-      <Card.Title>
-        Order
+      <Card.Title className='title'>
+        <h1>
+          Order
+        </h1>
         <Button
           variant="primary"
           size={'sm'}
           style={{ 'width': 25, }}
+          className='btnMinimize'
           onClick={() => { setShow(false) }}
         >
           -
         </Button>
       </Card.Title>
-      <Card.Text>
+      <Card.Text className='title'>
         {
           order.items === undefined || order.items.length === 0
             ? 'You still have nothing in the cart'
@@ -246,25 +249,29 @@ const Menu = (props) => {
   </Card>
 
   return (
-    <Row className="menu">
-      <Col xs="12">
-        <span>Menu</span>
-        <Button
-          variant="primary"
-          size={'sm'}
-          style={{ 'width': 25, }}
-          onClick={() => { setShow(true) }}
-        >
-          +
-        </Button>
-      </Col>
-      <Col className="setUp" xs={cartArea === true ? 8 : 12}>
-        {cards}
-      </Col>
-      <Col className="cart" xs={cartArea === true ? 4 : 0}>
-        {cartArea === true ? cart : ''}
-      </Col>
-    </Row>
+    <section className="menu">
+      <Row className='menuRow'>
+        <Col xs="12" className='menuTitle text-content'>
+          <h1>Menu</h1>
+          <Button
+            variant="primary"
+            size={'sm'}
+            style={{ 'width': 25, }}
+            onClick={() => { setShow(true) }}
+          >
+            +
+            </Button>
+        </Col>
+        <Col className="setUp" xs={cartArea === true ? 8 : 12}>
+          {cards}
+        </Col>
+        <Col className="cart" xs={cartArea === true ? 4 : 0}>
+          <div className='fixedItem'>
+            {cartArea === true ? cart : ''}
+          </div>
+        </Col>
+      </Row>
+    </section>
   )
 }
 
