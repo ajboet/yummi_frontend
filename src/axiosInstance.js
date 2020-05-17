@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 let token = localStorage.getItem('token')
 let authentication = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json'
+  'Accept': 'application/json',
 }
 
 if(token != null){
