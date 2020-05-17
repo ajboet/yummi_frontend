@@ -85,7 +85,13 @@ const Menu = (props) => {
         <Card.Body>
           <Card.Title>{product.name}</Card.Title>
           <Card.Text>
-            {product.details} <br></br> {product.price}
+            {product.details} <br></br> 
+            <i className={`${props.currency === 'USD'?
+                'fa fa-dollar-sign':
+                'fa fa-euro-sign'}`
+            }
+            style={{marginRight:2,color:'black'}}></i>
+            {props.currency === 'EUR' ? (product.price).toFixed(2) : (Number(product.price) * props.rateUSD).toFixed(2) }
           </Card.Text>
           <Button
             variant="primary"
@@ -94,7 +100,7 @@ const Menu = (props) => {
               addToOrder(product.id)
             }}
           >
-            Add to Cart
+            <i className="fa fa-cart-arrow-down"></i>
           </Button>
         </Card.Body>
       </Card>
@@ -185,9 +191,17 @@ const Menu = (props) => {
                       </Row>
                     </Col>
                     <Col className="cartInfo" xs={3}>
+                    <i className={`${props.currency === 'USD'?
+                          'fa fa-dollar-sign':
+                          'fa fa-euro-sign'}`
+                      }
+                      style={{marginRight:3,color:'white'}}></i>
                       <span>
-                        {item.price}
+                        { 
+                          props.currency === 'EUR' ? Number(item.price).toFixed(2) : (Number(item.price) * props.rateUSD).toFixed(2) 
+                        }
                       </span>
+                      
                     </Col>
                   </Row>
                 }
@@ -200,7 +214,14 @@ const Menu = (props) => {
                 Sub Total
                   </Col>
               <Col className="" xs={3}>
-                {order.subtotal}
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? Number(order.subtotal).toFixed(2) : (Number(order.subtotal) * props.rateUSD).toFixed(2)
+                }
               </Col>
             </Row>
             <Row className="bodyCart">
@@ -212,6 +233,7 @@ const Menu = (props) => {
                   </Col>
               <Col className="" xs={3}>
                 {order.tax}
+                <i className="fa fa-percent" style={{fontSize:12, marginLeft:3,color:'white'}}></i>
               </Col>
             </Row>
             <Row className="bodyCart">
@@ -222,7 +244,16 @@ const Menu = (props) => {
                 Total
                 </Col>
               <Col className="" xs={3}>
-                {order.total}
+                <span>
+                  <i className={`${props.currency === 'USD'?
+                      'fa fa-dollar-sign':
+                      'fa fa-euro-sign'}`
+                  }
+                  style={{marginRight:2,color:'white'}}></i>
+                  {
+                    props.currency === 'EUR' ? Number(order.total).toFixed(2) : (Number(order.total) * props.rateUSD).toFixed(2)
+                  }
+                </span>
               </Col>
             </Row>
             <Button

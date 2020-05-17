@@ -6,7 +6,7 @@ const Body = (props) => {
   return (
     <div>
       <Hero />
-      <Menu />
+      <Menu {...props} />
     </div>
   )
 }
