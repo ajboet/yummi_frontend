@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row'
 import CardColumns from 'react-bootstrap/CardColumns'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-
+import User from '../../NavBar/User'
 import Form from 'react-bootstrap/Form'
 
 const Menu = (props) => {
@@ -60,11 +60,16 @@ const Menu = (props) => {
       })
   }
 
-  const confirmOrder = (id) => {
-    axiosInstance.post('confirm_order/')
+  const confirmOrder = (confirmed) => {
+    if(confirmed === undefined){
+      axiosInstance.post('confirm_order/')
       .then((response) => {
         setOrder([])
       })
+    }
+    else{
+      setOrder([])
+    }
   }
 
   const cards = <CardColumns>
@@ -253,15 +258,8 @@ const Menu = (props) => {
             >
               Cancel Order
             </Button>
-            <Button
-              variant="outline-primary"
-              className="m-2 font-weight-bold"
-              onClick={() => {
-                confirmOrder()
-              }}
-            >
-              Confirm Order
-              </Button>
+            <User {...props} key="orderconfirmation" 
+              confirmOrder={confirmOrder} mode="Order confirmation"></User>
           </div>
       }
     </Card.Body>
@@ -278,14 +276,16 @@ const Menu = (props) => {
         </Col>
         <Col className="cart" xs={cartArea === true ? 4 : 0}>
           <div className='fixedItem'>
-            {cartArea === true ? cart : <Button
-                    variant="primary"
-                    size={'lg'}
-                    style={{ position:'fixed',bottom:10,right:10 }}
-                    onClick={() => { setShow(true) }}
-                  >
-                    <i className="fa fa-shopping-cart"></i>
-                  </Button>
+            {
+              cartArea === true ? cart : 
+                <Button
+                  variant="primary"
+                  size={'lg'}
+                  style={{ position:'fixed',bottom:10,right:10 }}
+                  onClick={() => { setShow(true) }}
+                >
+                  <i className="fa fa-shopping-cart"></i>
+                </Button>
             }
           </div>
         </Col>

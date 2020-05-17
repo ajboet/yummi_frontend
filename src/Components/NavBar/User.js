@@ -35,6 +35,9 @@ const User = (props) => {
       if(props.mode === "My profile"){
         localStorage.setItem('me',JSON.stringify(user))
       }
+      if(props.mode === "Order confirmation"){
+        props.confirmOrder(true)
+      }
       if(response.data.message !== undefined){
         props.showMessage({
           mode:'success',
@@ -52,10 +55,7 @@ const User = (props) => {
   }
 
   React.useState(() => {
-    if(props.mode === 'Order confirmation'){
-      setShow(true)
-    }
-    else if (props.mode === 'My profile'){
+    if (props.mode === 'My profile'){
       let userSave = localStorage.getItem('me')
       if(userSave === null){
         axiosInstance.get('user')
@@ -80,9 +80,21 @@ const User = (props) => {
 
   return (
     <>
-      <NavDropdown.Item eventKey={props.mode.toLocaleLowerCase().replace(' ','')} onClick={() => setShow(true)}>
-        {props.mode}
-      </NavDropdown.Item>
+      {
+        props.mode === 'Order confirmation' ? 
+          <Button
+            variant="outline-primary"
+            className="m-2 font-weight-bold"
+            onClick={() => {
+              props.token ? props.confirmOrder() : setShow(true)
+            }}
+          >
+            Confirm Order
+          </Button> :
+          <NavDropdown.Item eventKey={props.mode.toLocaleLowerCase().replace(' ','')} onClick={() => setShow(true)}>
+            {props.mode}
+          </NavDropdown.Item>
+      }
       <Modal
         show={show}
         animation={false}
