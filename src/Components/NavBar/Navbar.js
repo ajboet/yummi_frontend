@@ -24,7 +24,8 @@ const NavBase = (props) => {
 
   return (
     <Navbar variant="dark" className="justify-content-between" style={{zIndex:1}}>
-      <Navbar.Brand href="#">Yummy <b> Pizza </b> </Navbar.Brand>
+      {/* <Navbar.Brand href="#">Yummy <b> Pizza </b> </Navbar.Brand> */}
+      <div></div>
       <div>
         <Nav style={{display:'inline-block'}}>
           <Nav.Item style={{display:'inline-block'}} onClick={() => props.setCurrency(props.currency === 'USD' ? 'EUR':'USD')}>
