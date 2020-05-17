@@ -5,7 +5,7 @@ import Menu from './Menu/Menu'
 const Body = (props) => {
   return (
     <div>
-      <Hero />
+      <Hero/>
       <Menu {...props} />
     </div>
   )

@@ -23,7 +23,7 @@ const NavBase = (props) => {
   }
 
   return (
-    <Navbar variant="dark" className="justify-content-between">
+    <Navbar variant="dark" className="justify-content-between" style={{zIndex:1}}>
       <Navbar.Brand href="#">Yummy <b> Pizza </b> </Navbar.Brand>
       <div>
         <Nav style={{display:'inline-block'}}>

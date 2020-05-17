@@ -12,8 +12,6 @@ import Button from 'react-bootstrap/Button'
 
 import Form from 'react-bootstrap/Form'
 
-import Cookies from 'js-cookie'
-
 const Menu = (props) => {
 
   const [products, setProducts] = useState([])
@@ -24,14 +22,6 @@ const Menu = (props) => {
     axiosInstance.get('product')
       .then(response => {
         setProducts(response.data.products)
-        if (response.data.cookie) {
-          let cookie = response.data.cookie
-          Cookies.set(
-            cookie.name,
-            cookie.value,
-            { expires: cookie.expires, path: '' }
-          )
-        }
       })
   }, [])
 
@@ -116,13 +106,12 @@ const Menu = (props) => {
           Order
         </h1>
         <Button
-          variant="primary"
+          variant="outline-primary"
           size={'sm'}
-          style={{ 'width': 25, }}
           className='btnMinimize'
           onClick={() => { setShow(false) }}
         >
-          -
+          <i className="fa fa-chevron-down" style={{fontWeight:700}}></i>
         </Button>
       </Card.Title>
       <Card.Text className='title'>
@@ -137,22 +126,22 @@ const Menu = (props) => {
           ? ''
           : <div>
             <Row className="headCart">
-              <Col className="" xs={4}>
+              <Col xs={4}>
                 Product
-                  </Col>
+              </Col>
               <Col className="" xs={5}>
                 Quantity
-                  </Col>
+              </Col>
               <Col className="" xs={3}>
                 Price
-                  </Col>
+              </Col>
             </Row>
             {
               order.items === undefined || order.items.length === 0 ? '' :
                 order.items.map((item, key) => {
                   return <Row key={key} className="bodyCart">
                     <Col className="cartInfo" xs={4}>
-                      <span>
+                      <span style={{ color:'white', fontWeight:600, fontSize:14 }}>
                         {item.name}
                       </span>
                     </Col>
@@ -160,15 +149,14 @@ const Menu = (props) => {
                       <Row className="">
                         <Col className="options" xs={4}>
                           <Button
-                            variant="primary"
+                            variant="outline-danger"
                             size={'sm'}
-                            style={{ 'width': 25, }}
                             onClick={() => {
                               subtractItem(key)
                             }}
                           >
-                            -
-                              </Button>
+                            <i className="fa fa-minus"></i>
+                          </Button>
                         </Col>
                         <Col className="options" xs={4}>
                           <Form.Control
@@ -180,15 +168,14 @@ const Menu = (props) => {
                         </Col>
                         <Col className="options" xs={4}>
                           <Button
-                            variant="primary"
+                            variant="outline-primary"
                             size={'sm'}
-                            style={{ 'width': 25, }}
                             onClick={() => {
                               addItem(key)
                             }}
                           >
-                            +
-                            </Button>
+                            <i className="fa fa-plus"></i>
+                          </Button>
                         </Col>
                       </Row>
                     </Col>
@@ -198,12 +185,11 @@ const Menu = (props) => {
                           'fa fa-euro-sign'}`
                       }
                       style={{marginRight:3,color:'white'}}></i>
-                      <span>
+                      <span style={{ color:'white', fontWeight:600, fontSize:14 }}>
                         { 
                           props.currency === 'EUR' ? Number(item.price).toFixed(2) : (Number(item.price) * props.rateUSD).toFixed(2) 
                         }
-                      </span>
-                      
+                      </span>       
                     </Col>
                   </Row>
                 }
@@ -212,10 +198,10 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:600, fontSize:14 }} xs={5}>
                 Sub Total
                   </Col>
-              <Col className="" xs={3}>
+              <Col className="" style={{ color:'white', fontWeight:600, fontSize:14 }} xs={3}>
                 <i className={`${props.currency === 'USD'?
                     'fa fa-dollar-sign':
                     'fa fa-euro-sign'}`
@@ -230,10 +216,10 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:600, fontSize:14 }} xs={5}>
                 Tax
                   </Col>
-              <Col className="" xs={3}>
+              <Col className="" style={{ color:'white', fontWeight:600, fontSize:14 }} xs={3}>
                 {order.tax}
                 <i className="fa fa-percent" style={{fontSize:12, marginLeft:3,color:'white'}}></i>
               </Col>
@@ -242,11 +228,11 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:600, fontSize:14 }} xs={5}>
                 Total
                 </Col>
               <Col className="" xs={3}>
-                <span>
+                <span style={{ color:'white', fontWeight:600, fontSize:14 }}>
                   <i className={`${props.currency === 'USD'?
                       'fa fa-dollar-sign':
                       'fa fa-euro-sign'}`
@@ -259,17 +245,17 @@ const Menu = (props) => {
               </Col>
             </Row>
             <Button
-              variant="primary"
-              className="m-2"
+              variant="outline-danger"
+              className="m-2 font-weight-bold"
               onClick={() => {
                 cancelOrder()
               }}
             >
               Cancel Order
-              </Button>
+            </Button>
             <Button
-              variant="primary"
-              className="m-2"
+              variant="outline-primary"
+              className="m-2 font-weight-bold"
               onClick={() => {
                 confirmOrder()
               }}
@@ -286,21 +272,21 @@ const Menu = (props) => {
       <Row className='menuRow'>
         <Col xs="12" className='menuTitle text-content'>
           <h1>Menu</h1>
-          <Button
-            variant="primary"
-            size={'sm'}
-            style={{ 'width': 25, }}
-            onClick={() => { setShow(true) }}
-          >
-            +
-            </Button>
         </Col>
         <Col className="setUp" xs={cartArea === true ? 8 : 12}>
           {cards}
         </Col>
         <Col className="cart" xs={cartArea === true ? 4 : 0}>
           <div className='fixedItem'>
-            {cartArea === true ? cart : ''}
+            {cartArea === true ? cart : <Button
+                    variant="primary"
+                    size={'lg'}
+                    style={{ position:'fixed',bottom:10,right:10 }}
+                    onClick={() => { setShow(true) }}
+                  >
+                    <i className="fa fa-shopping-cart"></i>
+                  </Button>
+            }
           </div>
         </Col>
       </Row>

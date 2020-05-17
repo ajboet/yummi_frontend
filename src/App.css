@@ -35,6 +35,8 @@
 .alert-dismissible {
   margin-bottom: 0 !important;
   z-index: 1056 !important;
+  position: sticky !important;
+  top:0 !important;
 }
 
 #nav-dropdown {
