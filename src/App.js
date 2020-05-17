@@ -27,6 +27,10 @@ function App() {
     localStorage.setItem('logged',value)
   }
 
+  const changeGuest = (value) => {
+    setGuest(value)
+  }
+
   const changeCurrency = (cash) => {
     setCurrency(cash)
     localStorage.setItem('currency',cash)

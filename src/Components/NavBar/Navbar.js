@@ -40,7 +40,7 @@ const NavBase = (props) => {
         </Nav>
         <NavDropdown title="Menu" id="nav-dropdown" style={{display:'inline-block'}}>
           {
-            !props.token ? [
+            props.guest ? [
               <Login {...props} key="login"></Login>,
               <User {...props} key="register" mode="Register"></User>
             ]:
