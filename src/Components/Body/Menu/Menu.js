@@ -11,7 +11,6 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import User from '../../NavBar/User'
 import Form from 'react-bootstrap/Form'
-import Cookies from 'js-cookie'
 
 const Menu = (props) => {
 
@@ -20,22 +19,12 @@ const Menu = (props) => {
   const [cartArea, setShow] = useState(false)
 
   useEffect(() => {
-    axiosInstance.get('product',{},{
-      withCredentials: true
-    })
+    axiosInstance.get('product')
       .then(response => {
         setProducts(response.data.products)
-        if (response.data.cookie) {
-          let cookie = response.data.cookie
-          Cookies.set(
-            cookie.name,
-            cookie.value,
-            {
-              expires: Number(cookie.expires)/1440,
-              path: '',
-              domain: 'aj-yummi-backend.herokuapp.com'
-            }
-          );
+        if (response.data.token) {
+          localStorage.setItem('token',response.data.token)
+          axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
         }
       })
   }, [])
@@ -137,7 +126,7 @@ const Menu = (props) => {
       <Card.Text className='title'>
         {
           order.items === undefined || order.items.length === 0
-            ? 'You still have nothing in the cart'
+            ? 'Your cart is empty'
             : ''
         }
       </Card.Text>
@@ -218,7 +207,7 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
                 Sub Total
                   </Col>
               <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
@@ -236,20 +225,62 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
-                Tax
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+                Shipping Charges
                   </Col>
               <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
-                {order.tax}
-                <i className="fa fa-percent" style={{fontSize:12, marginLeft:3,color:'white'}}></i>
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? Number(order.shippingCharges).toFixed(2) : (Number(order.shippingCharges) * props.rateUSD).toFixed(2)
+                }
               </Col>
             </Row>
             <Row className="bodyCart">
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
-                Total
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+                Net Total
+                  </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? Number(order.netTotal).toFixed(2) : (Number(order.netTotal) * props.rateUSD).toFixed(2)
+                }
+              </Col>
+            </Row>
+            <Row className="bodyCart">
+              <Col className="" xs={4}>
+
+              </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+                Tax
+                  </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? Number(order.tax).toFixed(2) : (Number(order.tax) * props.rateUSD).toFixed(2)
+                }
+              </Col>
+            </Row>
+            <Row className="bodyCart">
+              <Col className="" xs={4}>
+
+              </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+                TOTAL
                 </Col>
               <Col className="" xs={3}>
                 <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>

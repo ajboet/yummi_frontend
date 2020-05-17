@@ -81,12 +81,14 @@ const User = (props) => {
   return (
     <>
       {
-        props.mode === 'Order confirmation' ? 
+        props.mode === 'Order confirmation' ?
           <Button
             variant="outline-primary"
             className="m-2 font-weight-bold"
             onClick={() => {
-              props.token ? props.confirmOrder() : setShow(true)
+              user.email.indexOf('guest_') !== -1 && user.email.indexOf('@mail.com') !== -1 ?
+                props.confirmOrder() :
+                setShow(true)
             }}
           >
             Confirm Order
@@ -238,7 +240,9 @@ const User = (props) => {
           <Button variant='outline-danger' style={{ fontWeight:800 }} onClick={() => setShow(false) }>
             Close
           </Button>
-          <Button variant='outline-primary' onClick={() => submit() }>Submit</Button>
+          <Button variant='outline-primary' onClick={() => submit() }>
+            {props.mode === 'Order confirmation' ? 'Confirm' : 'Submit'}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
