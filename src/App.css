@@ -29,12 +29,14 @@
 }
 
 .navbar {
-  background-color:#909090;
+  background:linear-gradient(0deg, rgba(51,26,15,1) 2%, rgba(61,32,18,1) 10%, rgba(57,28,15,1) 30%, rgba(36,18,9,1) 50%, rgba(39,19,10,1) 68%, rgba(51,26,15,1) 91%, rgba(42,21,11,1) 98%);
 }
 
 .alert-dismissible {
   margin-bottom: 0 !important;
   z-index: 1056 !important;
+  position: sticky !important;
+  top:0 !important;
 }
 
 #nav-dropdown {

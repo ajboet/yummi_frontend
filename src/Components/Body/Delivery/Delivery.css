@@ -1,0 +1,38 @@
+.delivery {
+  width: 100% !important;
+  background-color: #090100;
+  background-image: url('../../../assets/images/deliveryYummiPizza.ai.svg');
+  background-repeat-x: no-repeat;
+  background-repeat-y: no-repeat;
+  background-position: left center;
+  height: 70vh;
+  background-size: 45vw;
+  --text-color-h1: white;
+}
+
+.delivery .title {
+  /* border: 1px solid red; */
+  text-align: center;
+  text-justify: center;
+  font-family: 'Cabin Sketch', cursive;
+  padding: 15px 0px;
+
+}
+
+.delivery .title h1 {
+  font-size: 10vh;
+  text-transform: uppercase;
+  color: var(--text-color-h1);
+}
+
+.delivery .text-mesagge {
+  /* border: 1px solid red; */
+  width: 60%;
+  float: right;
+  /* height: 50vh; */
+  text-align: center;
+  text-justify: center;
+  color: white;
+  font-family: 'Cabin Sketch', cursive;
+
+}

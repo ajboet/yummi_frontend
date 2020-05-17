@@ -1,8 +1,9 @@
 .menu {
-  /* border: 1px solid red; */
   width: 100% !important;
   background-color: #090100;
-  /* display: flex; */
+  background-image: url("../../../assets/images/FondoYummiPizza.svg");
+  background-repeat-x: no-repeat;
+  background-size: 100vw;
 }
 
 .menu .menuRow {
@@ -14,7 +15,7 @@
   /* --text-color-h1: #005700; */
   --text-color-h1: white;
   /* --text-color-h1: #FF4700; */
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
 }
 
 .menu .menuRow .text-content h1 {
@@ -44,20 +45,127 @@
   /* position: fixed !important */
 }
 
-.menu .cart .cartBody {
-  border: 10px solid #4f2402;
-  background-color: #005700;
-  padding: 0px 15px;
-  min-height: 90vh;
+.menu .cart .cartBody .btn, .modal-footer .btn {
+  text-shadow: 0 0 1px #fff;
 }
 
-.menu .cart .cartBody .title {
+.menu .cart .cartBody {
+  /* border: 10px solid #4f2402; */
+  border: 10px solid transparent;
+  -moz-border-image: -moz-linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  -webkit-border-image: -webkit-linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  border-image: linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  border-image-slice: 1;
+  background: linear-gradient(
+    153deg,
+    rgba(0, 54, 0, 1) 0%,
+    rgba(0, 174, 0, 1) 0%,
+    rgba(0, 122, 0, 1) 10%,
+    rgba(0, 96, 0, 1) 56%,
+    rgba(0, 122, 0, 1) 89%,
+    rgba(0, 157, 0, 1) 100%,
+    rgba(0, 54, 0, 1) 100%
+  );
+  padding: 0px 15px;
+  min-height: 90vh;
+  position: fixed !important;
+  bottom: 0 !important;
+}
+
+.modal-content {
+  border: 10px solid transparent;
+  -moz-border-image: -moz-linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  -webkit-border-image: -webkit-linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  border-image: linear-gradient(
+    0deg,
+    rgba(33, 15, 0, 1) 2%,
+    rgba(52, 24, 1, 1) 10%,
+    rgba(87, 39, 2, 1) 30%,
+    rgba(72, 32, 1, 1) 50%,
+    rgba(103, 46, 2, 1) 68%,
+    rgba(72, 32, 1, 1) 91%,
+    rgba(33, 15, 0, 1) 98%
+  );
+  border-image-slice: 1;
+  background: linear-gradient(
+    153deg,
+    rgba(0, 54, 0, 1) 0%,
+    rgba(0, 174, 0, 1) 0%,
+    rgba(0, 122, 0, 1) 10%,
+    rgba(0, 96, 0, 1) 56%,
+    rgba(0, 122, 0, 1) 89%,
+    rgba(0, 157, 0, 1) 100%,
+    rgba(0, 54, 0, 1) 100%
+  );
+}
+
+.menu .cart .cartBody .title,
+.modal-content > .modal-header,
+.modal-content > .modal-body .form-label {
   --text-color-h1: white;
   font-size: 10vh;
   text-transform: uppercase;
   color: var(--text-color-h1);
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
   /* display: flex; */
+}
+
+.modal-content > .modal-header .close {
+  color: red;
+  font-size: 2.5rem;
+}
+
+.modal-content > .modal-body .form-label {
+  --text-color-h1: white;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: var(--text-color-h1);
+  font-family: "Cabin Sketch", cursive;
 }
 
 .menu .cart .cartBody .title .btnMinimize {
@@ -77,7 +185,7 @@
   font-size: 20px;
   text-transform: uppercase;
   color: var(--text-color-h1);
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
 }
 
 .menu .cart .bodyCart {

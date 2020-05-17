@@ -9,9 +9,8 @@ import Row from 'react-bootstrap/Row'
 import CardColumns from 'react-bootstrap/CardColumns'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-
+import User from '../../NavBar/User'
 import Form from 'react-bootstrap/Form'
-
 import Cookies from 'js-cookie'
 
 const Menu = (props) => {
@@ -21,7 +20,9 @@ const Menu = (props) => {
   const [cartArea, setShow] = useState(false)
 
   useEffect(() => {
-    axiosInstance.get('product')
+    axiosInstance.get('product',{},{
+      withCredentials: true
+    })
       .then(response => {
         setProducts(response.data.products)
         if (response.data.cookie) {
@@ -29,8 +30,12 @@ const Menu = (props) => {
           Cookies.set(
             cookie.name,
             cookie.value,
-            { expires: cookie.expires, path: '' }
-          )
+            {
+              expires: Number(cookie.expires)/1440,
+              path: '',
+              domain: 'aj-yummi-backend.herokuapp.com'
+            }
+          );
         }
       })
   }, [])
@@ -70,12 +75,16 @@ const Menu = (props) => {
       })
   }
 
-  const confirmOrder = (id) => {
-    axiosInstance.post('confirm_order/')
+  const confirmOrder = (confirmed) => {
+    if(confirmed === undefined){
+      axiosInstance.post('confirm_order/')
       .then((response) => {
-        console.log('Confirm Order ->', response);
         setOrder([])
       })
+    }
+    else{
+      setOrder([])
+    }
   }
 
   const cards = <CardColumns>
@@ -86,18 +95,24 @@ const Menu = (props) => {
       >
         <Card.Img variant="top" src={product.image} />
         <Card.Body>
-          <Card.Title>{product.name}</Card.Title>
-          <Card.Text>
-            {product.details} <br></br> {product.price}
+          <Card.Title style={{ fontWeight:900,fontFamily: 'Cabin Sketch, cursive', color:'#2a150b' }}>{product.name}</Card.Title>
+          <Card.Text style={{ fontWeight:900, color:'#2a150b' }}>
+            {product.details} <br></br> 
+            <i className={`${props.currency === 'USD'?
+                'fa fa-dollar-sign':
+                'fa fa-euro-sign'}`
+            }
+            style={{marginRight:2,color:'#2a150b'}}></i>
+            {props.currency === 'EUR' ? (product.price).toFixed(2) : (Number(product.price) * props.rateUSD).toFixed(2) }
           </Card.Text>
           <Button
-            variant="primary"
+            variant="outline-primary"
             onClick={() => {
               // setOpenCar(true)
               addToOrder(product.id)
             }}
           >
-            Add to Cart
+            <i className="fa fa-cart-arrow-down"></i>
           </Button>
         </Card.Body>
       </Card>
@@ -111,13 +126,12 @@ const Menu = (props) => {
           Order
         </h1>
         <Button
-          variant="primary"
+          variant="outline-primary"
           size={'sm'}
-          style={{ 'width': 25, }}
           className='btnMinimize'
           onClick={() => { setShow(false) }}
         >
-          -
+          <i className="fa fa-chevron-down" style={{fontWeight:700}}></i>
         </Button>
       </Card.Title>
       <Card.Text className='title'>
@@ -132,22 +146,22 @@ const Menu = (props) => {
           ? ''
           : <div>
             <Row className="headCart">
-              <Col className="" xs={4}>
+              <Col xs={4}>
                 Product
-                  </Col>
+              </Col>
               <Col className="" xs={5}>
                 Quantity
-                  </Col>
+              </Col>
               <Col className="" xs={3}>
                 Price
-                  </Col>
+              </Col>
             </Row>
             {
               order.items === undefined || order.items.length === 0 ? '' :
                 order.items.map((item, key) => {
                   return <Row key={key} className="bodyCart">
                     <Col className="cartInfo" xs={4}>
-                      <span>
+                      <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
                         {item.name}
                       </span>
                     </Col>
@@ -155,15 +169,14 @@ const Menu = (props) => {
                       <Row className="">
                         <Col className="options" xs={4}>
                           <Button
-                            variant="primary"
+                            variant="outline-danger"
                             size={'sm'}
-                            style={{ 'width': 25, }}
                             onClick={() => {
                               subtractItem(key)
                             }}
                           >
-                            -
-                              </Button>
+                            <i className="fa fa-minus"></i>
+                          </Button>
                         </Col>
                         <Col className="options" xs={4}>
                           <Form.Control
@@ -175,22 +188,28 @@ const Menu = (props) => {
                         </Col>
                         <Col className="options" xs={4}>
                           <Button
-                            variant="primary"
+                            variant="outline-primary"
                             size={'sm'}
-                            style={{ 'width': 25, }}
                             onClick={() => {
                               addItem(key)
                             }}
                           >
-                            +
-                            </Button>
+                            <i className="fa fa-plus"></i>
+                          </Button>
                         </Col>
                       </Row>
                     </Col>
                     <Col className="cartInfo" xs={3}>
-                      <span>
-                        {item.price}
-                      </span>
+                    <i className={`${props.currency === 'USD'?
+                          'fa fa-dollar-sign':
+                          'fa fa-euro-sign'}`
+                      }
+                      style={{marginRight:3,color:'white'}}></i>
+                      <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
+                        { 
+                          props.currency === 'EUR' ? Number(item.price).toFixed(2) : (Number(item.price) * props.rateUSD).toFixed(2) 
+                        }
+                      </span>       
                     </Col>
                   </Row>
                 }
@@ -199,53 +218,65 @@ const Menu = (props) => {
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
                 Sub Total
                   </Col>
-              <Col className="" xs={3}>
-                {order.subtotal}
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? Number(order.subtotal).toFixed(2) : (Number(order.subtotal) * props.rateUSD).toFixed(2)
+                }
               </Col>
             </Row>
             <Row className="bodyCart">
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
                 Tax
                   </Col>
-              <Col className="" xs={3}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
                 {order.tax}
+                <i className="fa fa-percent" style={{fontSize:12, marginLeft:3,color:'white'}}></i>
               </Col>
             </Row>
             <Row className="bodyCart">
               <Col className="" xs={4}>
 
               </Col>
-              <Col className="" xs={5}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={5}>
                 Total
                 </Col>
               <Col className="" xs={3}>
-                {order.total}
+                <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
+                  <i className={`${props.currency === 'USD'?
+                      'fa fa-dollar-sign':
+                      'fa fa-euro-sign'}`
+                  }
+                  style={{marginRight:2,color:'white'}}></i>
+                  {
+                    props.currency === 'EUR' ? 
+                      Number(order.total).toFixed(2) : 
+                      (Number(order.total) * props.rateUSD).toFixed(2)
+                  }
+                </span>
               </Col>
             </Row>
             <Button
-              variant="primary"
-              className="m-2"
+              variant="outline-danger"
+              className="m-2 font-weight-bold"
               onClick={() => {
                 cancelOrder()
               }}
             >
               Cancel Order
-              </Button>
-            <Button
-              variant="primary"
-              className="m-2"
-              onClick={() => {
-                confirmOrder()
-              }}
-            >
-              Confirm Order
-              </Button>
+            </Button>
+            <User {...props} key="orderconfirmation" 
+              confirmOrder={confirmOrder} mode="Order confirmation"></User>
           </div>
       }
     </Card.Body>
@@ -256,21 +287,23 @@ const Menu = (props) => {
       <Row className='menuRow'>
         <Col xs="12" className='menuTitle text-content'>
           <h1>Menu</h1>
-          <Button
-            variant="primary"
-            size={'sm'}
-            style={{ 'width': 25, }}
-            onClick={() => { setShow(true) }}
-          >
-            +
-            </Button>
         </Col>
         <Col className="setUp" xs={cartArea === true ? 8 : 12}>
           {cards}
         </Col>
         <Col className="cart" xs={cartArea === true ? 4 : 0}>
           <div className='fixedItem'>
-            {cartArea === true ? cart : ''}
+            {
+              cartArea === true ? cart : 
+                <Button
+                  variant="primary"
+                  size={'lg'}
+                  style={{ position:'fixed',bottom:10,right:10 }}
+                  onClick={() => { setShow(true) }}
+                >
+                  <i className="fa fa-shopping-cart"></i>
+                </Button>
+            }
           </div>
         </Col>
       </Row>

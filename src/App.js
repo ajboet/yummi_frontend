@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./Components/NavBar/Navbar.js"
 import Alert from 'react-bootstrap/Alert'
 import Body from './Components/Body/Body'
+import axios from 'axios'
 
 function App() {
   const [show,setShow] = React.useState(false)
@@ -14,9 +15,20 @@ function App() {
     'text':'',
     'title':''
   })
+  const [currency,setCurrency] = React.useState(
+    localStorage.getItem('currency') === null ? 
+      'EUR' : localStorage.getItem('currency')
+    )
+
+  const [rateUSD,setRate] = React.useState(0)
 
   const changeToken = (value) => {
     setToken(value)
+  }
+
+  const changeCurrency = (cash) => {
+    setCurrency(cash)
+    localStorage.setItem('currency',cash)
   }
 
   const closeAlert = () => {
@@ -44,6 +56,14 @@ function App() {
     setTimeout(closeAlert,6000)
   }
 
+
+  React.useEffect(()=> {
+    axios.get('http://data.fixer.io/api/latest?access_key=58afdd78942626fe365d0fcbbb9a69d3&symbols=USD')
+    .then(response => {
+      setRate(response.data.rates['USD'])
+    })
+  }, [])
+
   return (
     <div className="App">
       <Alert variant={alertVar.mode}
@@ -59,8 +79,8 @@ function App() {
           alertVar.text.split('\n').map((item,i) => <p style={{ fontSize:14, paddingTop:0,paddingBottom:0 }} key={i}>{item}</p>)
         }
       </Alert>
-      <Navbar token={token} changeToken={changeToken} showMessage={showMessage}></Navbar>
-      <Body />
+      <Navbar currency={currency} setCurrency={changeCurrency} token={token} changeToken={changeToken} showMessage={showMessage}></Navbar>
+      <Body currency={currency} rateUSD={rateUSD} token={token} showMessage={showMessage}/>
     </div>
   );
 }
