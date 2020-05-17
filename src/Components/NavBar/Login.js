@@ -17,15 +17,9 @@ const Login = (props) => {
     axiosInstance.post('login',user)
     .then((response) => {
       setShow(false)
-      if (localStorage.getItem('token')) {
-        localStorage.setItem('guest_token', localStorage.getItem('token'))
-        localStorage.removeItem('is_guest')
-        localStorage.removeItem('me')
-      }
       localStorage.setItem('token', response.data.token)
       axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
       props.changeToken(true)
-      props.changeGuest(false)
       props.showMessage({
         mode:'success',
         text:response.data.message
