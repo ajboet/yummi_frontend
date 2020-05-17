@@ -7,39 +7,42 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 import CardColumns from 'react-bootstrap/CardColumns'
+import Badge from 'react-bootstrap/Badge'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import User from '../../NavBar/User'
-import Form from 'react-bootstrap/Form'
 
 const Menu = (props) => {
 
   const [products, setProducts] = useState([])
   const [order, setOrder] = useState([])
   const [cartArea, setShow] = useState(false)
-
-  useEffect(() => {
-    axiosInstance.get('product')
-      .then(response => {
-        setProducts(response.data.products)
-        if (response.data.token) {
-          localStorage.setItem('token',response.data.token)
-          axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
-        }
-      })
-  }, [])
+  const { token, changeToken } = props
 
   useEffect(() => {
     axiosInstance.get('order')
       .then(response => {
         setOrder(response.data)
       })
-  }, [])
+    axiosInstance.get('product')
+    .then(response => {
+      setProducts(response.data.products)
+      
+      if (response.data.token) {
+        localStorage.setItem('token',response.data.token)
+        axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`
+        changeToken(false)
+      }
+    })
+  }, [token,changeToken])
 
   const addToOrder = (id) => {
     axiosInstance.post('order/add/' + id + '/')
       .then((response) => {
         setOrder(response.data)
+        if(!cartArea){
+          setShow(true)
+        }
       })
   }
 
@@ -135,82 +138,81 @@ const Menu = (props) => {
           ? ''
           : <div>
             <Row className="headCart">
-              <Col xs={4}>
+              <Col xs={5}>
                 Product
               </Col>
-              <Col className="" xs={5}>
-                Quantity
+              <Col className="" xs={4}>
+                Qty
               </Col>
               <Col className="" xs={3}>
                 Price
               </Col>
             </Row>
-            {
-              order.items === undefined || order.items.length === 0 ? '' :
-                order.items.map((item, key) => {
-                  return <Row key={key} className="bodyCart">
-                    <Col className="cartInfo" xs={4}>
-                      <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
-                        {item.name}
-                      </span>
-                    </Col>
-                    <Col className="" xs={5}>
-                      <Row className="">
-                        <Col className="options" xs={4}>
-                          <Button
-                            variant="outline-danger"
-                            size={'sm'}
-                            onClick={() => {
-                              subtractItem(key)
-                            }}
-                          >
-                            <i className="fa fa-minus"></i>
-                          </Button>
-                        </Col>
-                        <Col className="options" xs={4}>
-                          <Form.Control
-                            size="sm"
-                            type="text"
-                            value={item.quantity}
-                            disabled
-                          />
-                        </Col>
-                        <Col className="options" xs={4}>
-                          <Button
-                            variant="outline-primary"
-                            size={'sm'}
-                            onClick={() => {
-                              addItem(key)
-                            }}
-                          >
-                            <i className="fa fa-plus"></i>
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col className="cartInfo" xs={3}>
-                    <i className={`${props.currency === 'USD'?
-                          'fa fa-dollar-sign':
-                          'fa fa-euro-sign'}`
-                      }
-                      style={{marginRight:3,color:'white'}}></i>
-                      <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
-                        { 
-                          props.currency === 'EUR' ? Number(item.price).toFixed(2) : (Number(item.price) * props.rateUSD).toFixed(2) 
+            <div className="ProductList">
+              {
+                order.items === undefined || order.items.length === 0 ? '' :
+                  order.items.map((item, key) => {
+                    return <Row key={key} className="bodyCart">
+                      <Col className="cartInfo" xs={5}>
+                        <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
+                          {item.name}
+                        </span>
+                      </Col>
+                      <Col className="" xs={4}>
+                        <Row className="">
+                          <Col className="options" xs={5}>
+                            <Button
+                              variant="outline-danger"
+                              size={'sm'}
+                              onClick={() => {
+                                subtractItem(key)
+                              }}
+                            >
+                              <i className="fa fa-minus"></i>
+                            </Button>
+                          </Col>
+                          <Col className="options" xs={2}>
+                            <span>
+                              {item.quantity}
+                            </span> 
+                          </Col>
+                          <Col className="options" xs={5}>
+                            <Button
+                              variant="outline-primary"
+                              size={'sm'}
+                              onClick={() => {
+                                addItem(key)
+                              }}
+                            >
+                              <i className="fa fa-plus"></i>
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col className="cartInfo" xs={3}>
+                      <i className={`${props.currency === 'USD'?
+                            'fa fa-dollar-sign':
+                            'fa fa-euro-sign'}`
                         }
-                      </span>       
-                    </Col>
-                  </Row>
-                }
+                        style={{marginRight:3,color:'white'}}></i>
+                        <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
+                          { 
+                            props.currency === 'EUR' ? Number(item.price).toFixed(2) : (Number(item.price) * props.rateUSD).toFixed(2) 
+                          }
+                        </span>       
+                      </Col>
+                    </Row>
+                  }
                 )}
-            <Row className="bodyCart">
-              <Col className="" xs={4}>
 
+            </div>
+            <Row className="bodyCart">
+              <Col className="" xs={3}>
               </Col>
               <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
                 Sub Total
-                  </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+              </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16, textAlign: 'right', fontFamily: 'Cabin Sketch, cursive' }} xs={4}>
                 <i className={`${props.currency === 'USD'?
                     'fa fa-dollar-sign':
                     'fa fa-euro-sign'}`
@@ -222,13 +224,23 @@ const Menu = (props) => {
               </Col>
             </Row>
             <Row className="bodyCart">
-              <Col className="" xs={4}>
+              <Col className="" xs={3}>
 
               </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+              <Col className="" 
+                style={{ 
+                  color:'white', 
+                  fontWeight:900, 
+                  fontSize:16 , 
+                  fontFamily: 'Cabin Sketch, cursive', 
+                  textAlign: 'right', 
+                  alignSelf: 'stretch' 
+                }} 
+                xs={5}>
                 Shipping Charges
                   </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+              <Col className="" 
+                style={{ color:'white',textAlign: 'right', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={4}>
                 <i className={`${props.currency === 'USD'?
                     'fa fa-dollar-sign':
                     'fa fa-euro-sign'}`
@@ -240,13 +252,15 @@ const Menu = (props) => {
               </Col>
             </Row>
             <Row className="bodyCart">
-              <Col className="" xs={4}>
+              <Col className="" xs={3}>
 
               </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
+              <Col className="" 
+              style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', 
+              textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
                 Net Total
-                  </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+              </Col>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive',textAlign: 'right' }} xs={4}>
                 <i className={`${props.currency === 'USD'?
                     'fa fa-dollar-sign':
                     'fa fa-euro-sign'}`
@@ -258,13 +272,13 @@ const Menu = (props) => {
               </Col>
             </Row>
             <Row className="bodyCart">
-              <Col className="" xs={4}>
+              <Col className="" xs={3}>
 
               </Col>
               <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
                 Tax
                   </Col>
-              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }} xs={3}>
+              <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 ,textAlign: 'right', fontFamily: 'Cabin Sketch, cursive' }} xs={4}>
                 <i className={`${props.currency === 'USD'?
                     'fa fa-dollar-sign':
                     'fa fa-euro-sign'}`
@@ -276,25 +290,23 @@ const Menu = (props) => {
               </Col>
             </Row>
             <Row className="bodyCart">
-              <Col className="" xs={4}>
+              <Col className="" xs={3}>
 
               </Col>
               <Col className="" style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive', textAlign: 'right', alignSelf: 'stretch' }} xs={5}>
                 TOTAL
-                </Col>
-              <Col className="" xs={3}>
-                <span style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive' }}>
-                  <i className={`${props.currency === 'USD'?
-                      'fa fa-dollar-sign':
-                      'fa fa-euro-sign'}`
-                  }
-                  style={{marginRight:2,color:'white'}}></i>
-                  {
-                    props.currency === 'EUR' ? 
-                      Number(order.total).toFixed(2) : 
-                      (Number(order.total) * props.rateUSD).toFixed(2)
-                  }
-                </span>
+              </Col>
+              <Col className="" xs={4} style={{ color:'white', fontWeight:900, fontSize:16 , fontFamily: 'Cabin Sketch, cursive',textAlign: 'right' }}>
+                <i className={`${props.currency === 'USD'?
+                    'fa fa-dollar-sign':
+                    'fa fa-euro-sign'}`
+                }
+                style={{marginRight:2,color:'white'}}></i>
+                {
+                  props.currency === 'EUR' ? 
+                    Number(order.total).toFixed(2) : 
+                    (Number(order.total) * props.rateUSD).toFixed(2)
+                }
               </Col>
             </Row>
             <Button
@@ -319,19 +331,22 @@ const Menu = (props) => {
         <Col xs="12" className='menuTitle text-content'>
           <h1>Menu</h1>
         </Col>
-        <Col className="setUp" xs={cartArea === true ? 8 : 12}>
+        <Col className="setUp" xs="12" md={cartArea === true ? 8 : 12}>
           {cards}
         </Col>
-        <Col className="cart" xs={cartArea === true ? 4 : 0}>
+        <Col className="cart" xs="12" md={cartArea === true ? 4 : 0}>
           <div className='fixedItem'>
             {
               cartArea === true ? cart : 
                 <Button
                   variant="primary"
                   size={'lg'}
-                  style={{ position:'fixed',bottom:10,right:10 }}
+                  style={{ position:'fixed',bottom:10,right:10,zIndex:2 }}
                   onClick={() => { setShow(true) }}
                 >
+                  <Badge pill style={{float:'right'}} variant="danger">
+                    {order.items === undefined || order.items.length === 0 ? 0 : order.items.length}
+                  </Badge>
                   <i className="fa fa-shopping-cart"></i>
                 </Button>
             }

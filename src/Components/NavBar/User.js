@@ -55,7 +55,7 @@ const User = (props) => {
   }
 
   React.useState(() => {
-    if (props.mode === 'My profile'){
+    if (props.mode === 'My profile' || props.mode === 'Order confirmation'){
       let userSave = localStorage.getItem('me')
       if(userSave === null){
         axiosInstance.get('user')
@@ -86,9 +86,9 @@ const User = (props) => {
             variant="outline-primary"
             className="m-2 font-weight-bold"
             onClick={() => {
-              user.email.indexOf('guest_') !== -1 && user.email.indexOf('@mail.com') !== -1 ?
-                props.confirmOrder() :
-                setShow(true)
+              user.email.indexOf('guest_') !== -1 || user.name.indexOf('Guest') !== -1 ?
+                setShow(true) :
+                props.confirmOrder()
             }}
           >
             Confirm Order

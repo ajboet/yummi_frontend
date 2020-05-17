@@ -16,9 +16,9 @@ const NavBase = (props) => {
         text:response.data.message
       })
     })
+    delete axiosInstance.defaults.headers['Authorization']
     localStorage.removeItem('token')
     localStorage.removeItem('me')
-    delete axiosInstance.defaults.headers['Authorization']
     props.changeToken(false)
   }
 

@@ -28,8 +28,10 @@
 .delivery .text-mesagge {
   /* border: 1px solid red; */
   width: 60%;
-  float: right;
   /* height: 50vh; */
+  font-size: 4.7vh !important;
+  position: absolute;
+  right: 0;
   text-align: center;
   text-justify: center;
   color: white;

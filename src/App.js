@@ -8,8 +8,8 @@ import axios from 'axios'
 
 function App() {
   const [show,setShow] = React.useState(false)
-  const logged = localStorage.getItem('token')
-  const [token, setToken] = React.useState(logged !== null ? true : false);
+  const logged = localStorage.getItem('logged')  
+  const [token, setToken] = React.useState(logged !== null ? JSON.parse(logged) : false);
   const [alertVar, setAlert] = React.useState({
     'mode':'info',
     'text':'',
@@ -24,6 +24,7 @@ function App() {
 
   const changeToken = (value) => {
     setToken(value)
+    localStorage.setItem('logged',value)
   }
 
   const changeCurrency = (cash) => {
@@ -80,7 +81,7 @@ function App() {
         }
       </Alert>
       <Navbar currency={currency} setCurrency={changeCurrency} token={token} changeToken={changeToken} showMessage={showMessage}></Navbar>
-      <Body currency={currency} rateUSD={rateUSD} token={token} showMessage={showMessage}/>
+      <Body currency={currency} rateUSD={rateUSD} token={token} showMessage={showMessage} changeToken={changeToken}/>
     </div>
   );
 }
