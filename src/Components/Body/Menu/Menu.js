@@ -12,6 +12,8 @@ import Button from 'react-bootstrap/Button'
 
 import Form from 'react-bootstrap/Form'
 
+import Cookies from 'js-cookie'
+
 const Menu = (props) => {
 
   const [products, setProducts] = useState([])
@@ -21,8 +23,15 @@ const Menu = (props) => {
   useEffect(() => {
     axiosInstance.get('product')
       .then(response => {
-        setProducts(response.data)
-        console.log('Los productos son ->', response);
+        setProducts(response.data.products)
+        if (response.data.cookie) {
+          let cookie = response.data.cookie
+          Cookies.set(
+            cookie.name,
+            cookie.value,
+            { expires: cookie.expires, path: '' }
+          )
+        }
       })
   }, [])
 
@@ -30,15 +39,12 @@ const Menu = (props) => {
     axiosInstance.get('order')
       .then(response => {
         setOrder(response.data)
-        console.log('The order ->', response);
       })
   }, [])
 
   const addToOrder = (id) => {
-    console.log('Lo que llega para mandar al carro ', id);
     axiosInstance.post('order/add/' + id + '/')
       .then((response) => {
-        console.log('response addToOrder ->', response);
         setOrder(response.data)
       })
   }
@@ -46,7 +52,6 @@ const Menu = (props) => {
   const cancelOrder = () => {
     axiosInstance.delete('order/delete/')
       .then((response) => {
-        console.log('Delete ->', response);
         setOrder([])
       })
   }
@@ -54,7 +59,6 @@ const Menu = (props) => {
   const addItem = (id) => {
     axiosInstance.post('order/item/increment/', { cartItemIndex: id })
       .then((response) => {
-        console.log('addItem ->', response);
         setOrder(response.data)
       })
   }
@@ -62,7 +66,6 @@ const Menu = (props) => {
   const subtractItem = (id) => {
     axiosInstance.post('order/item/decrement/', { cartItemIndex: id })
       .then((response) => {
-        console.log('subtractItem ->', response);
         setOrder(response.data)
       })
   }
