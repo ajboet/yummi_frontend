@@ -1,0 +1,66 @@
+.menu {
+  border: 1px solid red;
+  width: 100% !important;
+  /* display: flex; */
+}
+
+.menu .setUp {
+  border: 1px solid blue;
+}
+
+.menu .cart {
+  border: 1px solid green
+}
+
+.menu .cart .headCart {
+  /* border: 1px solid gray;
+  margin-bottom: 4px; */
+  border-bottom: 1px solid gray;
+  margin-bottom: 4px;
+  margin-right: -15px;
+  margin-left: -15px;
+  padding-bottom: 4px;
+}
+
+.menu .cart .bodyCart {
+  border-bottom: 1px solid gray;
+  margin-bottom: 4px;
+  margin-right: -15px;
+  margin-left: -15px;
+  padding-bottom: 4px;
+}
+
+.menu .cart .bodyCart .cartInfo {
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-top: auto;
+  padding-bottom: auto;
+}
+
+.menu .cart .bodyCart .options {
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-top: auto;
+  padding-bottom: auto;
+}
+
+.menu .cart .bodyCart .btn {
+  /* border: 1px solid gray; */
+  margin: 0px;
+}
+
+.bred {
+  border: 1px solid red;
+}
+
+.bblue {
+  border: 1px solid blue;
+}
+
+.bgreen {
+  border: 1px solid green;
+}
+
+.borange {
+  border: 1px solid orange;
+}
