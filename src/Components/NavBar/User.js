@@ -8,75 +8,85 @@ import Col from 'react-bootstrap/Col'
 import { axiosInstance } from "../../axiosInstance"
 
 const User = (props) => {
-  const [show,setShow] = React.useState(false)
+  const [show, setShow] = React.useState(false)
   const [user, setUser] = React.useState({
-    'name':'',
-    'email':'',
-    password:'',
-    password_confirmation:'',
-    full_address:'',
-    cellphone_number:''
+    'name': '',
+    'email': '',
+    password: '',
+    password_confirmation: '',
+    full_address: '',
+    cellphone_number: ''
   })
 
   const submit = () => {
     let dataUser = JSON.parse(JSON.stringify(user))
-    if(props.mode === "My profile" && user.password === ""){
+    if (props.mode === "My profile" && user.password === "") {
       delete dataUser['password']
       delete dataUser['password_confirmation']
     }
 
     axiosInstance({
-      url:props.mode === 'Register' ? 'signup' : props.mode === 'Order confirmation' ? 'confirm_order' : 'update',
-      method:props.mode === 'Register' || props.mode === 'Order confirmation' ? 'post' : 'patch',
-      data:dataUser
+      url: props.mode === 'Register' ? 'signup' : props.mode === 'Order confirmation' ? 'confirm_order' : 'update',
+      method: props.mode === 'Register' || props.mode === 'Order confirmation' ? 'post' : 'patch',
+      data: dataUser
     })
-    .then((response) => {
-      setShow(false)
-      if(props.mode === "My profile"){
-        localStorage.setItem('me',JSON.stringify(user))
-      }
-      if(props.mode === "Order confirmation"){
-        props.confirmOrder(true)
-      }
-      if(response.data.message !== undefined){
-        props.showMessage({
-          mode:'success',
-          text:response.data.message
-        })  
-      }
-    })
-    .catch(err => {
-      props.showMessage({
-        mode:'danger',
-        title:err.response.data.message,
-        text:err.response.data.errors
+      .then((response) => {
+        setShow(false)
+        if (props.mode === "My profile") {
+          localStorage.setItem('me', JSON.stringify(user))
+        }
+        if (props.mode === "Order confirmation") {
+          props.confirmOrder(true)
+        }
+        if (response.data.message !== undefined) {
+          props.showMessage({
+            mode: 'success',
+            text: response.data.message
+          })
+        }
+        if (props.mode === 'Register') {
+          setUser({
+            'name': '',
+            'email': '',
+            password: '',
+            password_confirmation: '',
+            full_address: '',
+            cellphone_number: ''
+          })
+        }
       })
-    })
+      .catch(err => {
+        props.showMessage({
+          mode: 'danger',
+          title: err.response.data.message,
+          text: err.response.data.errors
+        })
+      })
   }
 
   React.useState(() => {
-    if (props.mode === 'My profile'){
+    if (props.mode === 'My profile') {
       let userSave = localStorage.getItem('me')
-      if(userSave === null){
+      if (userSave === null) {
         axiosInstance.get('user')
-        .then(response =>{
-          localStorage.setItem('me',JSON.stringify(response.data))
-          setUser({...user, ...response.data})
-        })
-        .catch(err => {
-          props.showMessage({
-            mode:'danger',
-            title:err.response.data.message,
-            text:err.response.data.errors
+          .then(response => {
+            localStorage.setItem('me', JSON.stringify(response.data))
+            setUser({ ...user, ...response.data })
           })
-        })
+          .catch(err => {
+            props.showMessage({
+              mode: 'danger',
+              title: err.response.data.message,
+              text: err.response.data.errors
+            })
+          })
       }
       else {
         userSave = JSON.parse(userSave)
-        setUser({...user, ...userSave})
+        setUser({ ...user, ...userSave })
       }
     }
-  },[props.mode])
+  }, [props.mode])
 
   return (
     <>
@@ -93,7 +103,7 @@ const User = (props) => {
           >
             Confirm Order
           </Button> :
-          <NavDropdown.Item eventKey={props.mode.toLocaleLowerCase().replace(' ','')} onClick={() => setShow(true)}>
+          <NavDropdown.Item eventKey={props.mode.toLocaleLowerCase().replace(' ', '')} onClick={() => setShow(true)}>
             {props.mode}
           </NavDropdown.Item>
       }
@@ -125,9 +135,9 @@ const User = (props) => {
                     name="name"
                     type="text"
                     value={user.name}
-                    onChange={(evt)=> setUser({...user, name:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, name: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -145,9 +155,9 @@ const User = (props) => {
                     name="email"
                     type="email"
                     value={user.email}
-                    onChange={(evt)=> setUser({...user, email:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, email: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -165,9 +175,9 @@ const User = (props) => {
                     name="phone"
                     type="telephone"
                     value={user.cellphone_number}
-                    onChange={(evt)=> setUser({...user, cellphone_number:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, cellphone_number: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -185,9 +195,9 @@ const User = (props) => {
                     name="address"
                     type="text"
                     value={user.full_address}
-                    onChange={(evt)=> setUser({...user, full_address:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, full_address: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -205,9 +215,9 @@ const User = (props) => {
                     name="password"
                     type="password"
                     value={user.password}
-                    onChange={(evt)=> setUser({...user, password:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, password: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -225,9 +235,9 @@ const User = (props) => {
                     name="password_confirmation"
                     type="password"
                     value={user.password_confirmation}
-                    onChange={(evt)=> setUser({...user, password_confirmation:evt.target.value})}
+                    onChange={(evt) => setUser({ ...user, password_confirmation: evt.target.value })}
                   />
-                    {/* isInvalid={!!errors.username} */}
+                  {/* isInvalid={!!errors.username} */}
                   <Form.Control.Feedback type="invalid">
                     {/* {errors.username} */}
                   </Form.Control.Feedback>
@@ -237,10 +247,10 @@ const User = (props) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='outline-danger' style={{ fontWeight:800 }} onClick={() => setShow(false) }>
+          <Button variant='outline-danger' style={{ fontWeight: 800 }} onClick={() => setShow(false)}>
             Close
           </Button>
-          <Button variant='outline-primary' onClick={() => submit() }>
+          <Button variant='outline-primary' onClick={() => submit()}>
             {props.mode === 'Order confirmation' ? 'Confirm' : 'Submit'}
           </Button>
         </Modal.Footer>
