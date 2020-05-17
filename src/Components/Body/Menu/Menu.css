@@ -16,7 +16,7 @@
   /* --text-color-h1: #005700; */
   --text-color-h1: white;
   /* --text-color-h1: #FF4700; */
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
 }
 
 .menu .menuRow .text-content h1 {
@@ -51,6 +51,8 @@
   background-color: #005700;
   padding: 0px 15px;
   min-height: 90vh;
+  position: fixed !important;
+  bottom: 0 !important;
 }
 
 .menu .cart .cartBody .title {
@@ -58,7 +60,7 @@
   font-size: 10vh;
   text-transform: uppercase;
   color: var(--text-color-h1);
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
   /* display: flex; */
 }
 
@@ -79,7 +81,7 @@
   font-size: 20px;
   text-transform: uppercase;
   color: var(--text-color-h1);
-  font-family: 'Cabin Sketch', cursive;
+  font-family: "Cabin Sketch", cursive;
 }
 
 .menu .cart .bodyCart {
