@@ -331,12 +331,11 @@ const Menu = (props) => {
         <Col xs="12" className='menuTitle text-content'>
           <h1>Menu</h1>
         </Col>
-        <Col className="setUp" xs="12" md={cartArea === true ? 8 : 12}>
+        <Col className="setUp" xs="12" lg={cartArea === true ? 8 : 12}>
           {cards}
         </Col>
-        <Col className="cart" xs="12" md={cartArea === true ? 4 : 0}>
-          <div className='fixedItem'>
-            {
+        <Col className="cart" xs="12" lg={cartArea === true ? 4 : 0}>
+          {
               cartArea === true ? cart : 
                 <Button
                   variant="primary"
@@ -350,7 +349,6 @@ const Menu = (props) => {
                   <i className="fa fa-shopping-cart"></i>
                 </Button>
             }
-          </div>
         </Col>
       </Row>
     </section>
