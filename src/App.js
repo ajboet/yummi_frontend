@@ -58,7 +58,7 @@ function App() {
 
 
   React.useEffect(()=> {
-    axios.get('http://data.fixer.io/api/latest?access_key=58afdd78942626fe365d0fcbbb9a69d3&symbols=USD')
+    axios.get('https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD')
     .then(response => {
       setRate(response.data.rates['USD'])
     })
