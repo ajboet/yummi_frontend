@@ -14,6 +14,5 @@ if(token != null){
 
 export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  headers: authentication,
-  withCredencials:true
+  headers: authentication
 });
