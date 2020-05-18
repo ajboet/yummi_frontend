@@ -37,7 +37,7 @@ const Menu = (props) => {
   }, [token,changeToken])
 
   const addToOrder = (id) => {
-    axiosInstance.post('order/add/' + id + '/')
+    axiosInstance.post('order/add/' + id )
       .then((response) => {
         setOrder(response.data)
         if(!cartArea){
