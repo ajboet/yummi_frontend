@@ -57,7 +57,6 @@ function App() {
     setTimeout(closeAlert, 6000)
   }
 
-
   React.useEffect(()=> {
     axios.get('https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD')
     .then(response => {
