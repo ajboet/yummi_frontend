@@ -47,21 +47,21 @@ const Menu = (props) => {
   }
 
   const cancelOrder = () => {
-    axiosInstance.delete('order/delete/')
+    axiosInstance.delete('order/delete')
       .then((response) => {
         setOrder([])
       })
   }
 
   const addItem = (id) => {
-    axiosInstance.post('order/item/increment/', { cartItemIndex: id })
+    axiosInstance.post('order/item/increment', { cartItemIndex: id })
       .then((response) => {
         setOrder(response.data)
       })
   }
 
   const subtractItem = (id) => {
-    axiosInstance.post('order/item/decrement/', { cartItemIndex: id })
+    axiosInstance.post('order/item/decrement', { cartItemIndex: id })
       .then((response) => {
         setOrder(response.data)
       })
@@ -69,7 +69,7 @@ const Menu = (props) => {
 
   const confirmOrder = (confirmed) => {
     if(confirmed === undefined){
-      axiosInstance.post('confirm_order/')
+      axiosInstance.post('confirm_order')
       .then((response) => {
         setOrder([])
       })
