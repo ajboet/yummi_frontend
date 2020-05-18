@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav'
 import Login from './Login'
 import User from './User'
 import { axiosInstance } from "../../axiosInstance"
+import Historical from './Historical'
 
 const NavBase = (props) => {
 
@@ -16,14 +17,14 @@ const NavBase = (props) => {
         text:response.data.message
       })
     })
+    delete axiosInstance.defaults.headers['Authorization']
     localStorage.removeItem('token')
     localStorage.removeItem('me')
-    delete axiosInstance.defaults.headers['Authorization']
     props.changeToken(false)
   }
 
   return (
-    <Navbar variant="dark" className="justify-content-between" style={{zIndex:1}}>
+    <Navbar variant="dark" className="justify-content-between" style={{zIndex:2,position:'sticky',top:0}}>
       {/* <Navbar.Brand href="#">Yummy <b> Pizza </b> </Navbar.Brand> */}
       <div></div>
       <div>
@@ -46,7 +47,7 @@ const NavBase = (props) => {
             ]:
             [
               <User {...props} key="profile" mode="My profile"></User>,
-              <NavDropdown.Item  key="history" eventKey="history">History</NavDropdown.Item>,
+              <Historical {...props} key="history" eventKey="history"></Historical>,
               <NavDropdown.Item 
                 onClick={logout}
                 key="logout" eventKey="logout">
