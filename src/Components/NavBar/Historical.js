@@ -11,7 +11,7 @@ const History = (props) => {
 
   const getOrders = async () => {
     try {
-      let response = await axiosInstance.get('order_record/')
+      let response = await axiosInstance.get('order_record')
       response = response.data
       for (let j = 0; j < response.length; j++) {
         let items = response[j].items
