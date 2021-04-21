@@ -58,10 +58,11 @@ function App() {
   }
 
   React.useEffect(()=> {
-    axios.get('https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD')
+    setRate(1.203188)
+    /*axios.get('https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD')
     .then(response => {
       setRate(response.data.rates['USD'])
-    })
+    })*/
   }, [])
 
   return (

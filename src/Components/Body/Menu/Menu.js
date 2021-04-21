@@ -95,7 +95,7 @@ const Menu = (props) => {
                 'fa fa-euro-sign'}`
             }
             style={{marginRight:2,color:'#2a150b'}}></i>
-            {props.currency === 'EUR' ? (product.price).toFixed(2) : (Number(product.price) * props.rateUSD).toFixed(2) }
+            {props.currency === 'EUR' ? Number(product.price).toFixed(2) : (Number(product.price) * props.rateUSD).toFixed(2) }
           </Card.Text>
           <Button
             variant="outline-primary"
